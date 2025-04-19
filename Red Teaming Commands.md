@@ -7,7 +7,7 @@ Web Server - 192.168.50.3(Ext), 10.10.10.5(Int) Runs on two interfaces, 192.168.
 Domain Controller(DC) 10.10.10.2
 
 Application Server 10.10.10.4
-
+```bash 
 Curl can be used to connect to a web server
 example:
 curl --upload-file http://192.168.50.3/dav/shell.php - Uploads a shell.php file on the
@@ -16,6 +16,7 @@ server.
 cadaver http://10.10.10.1/dav/ - This command is used to enter the /dav directory
 
 put /usr/share/shell.php - PUT method is used to upload the shell.php file.
+```
 
 <h3>Network Pivoting</h3>
 
