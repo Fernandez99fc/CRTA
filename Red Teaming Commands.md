@@ -31,9 +31,10 @@ We have different ways of pivoting, first of which is using Proxychains with an 
 ssh(with -D <proxy port> flag ) connection to the target.
 
 NOTE: USE ANY OF THE PIVOTING TECHNIQUES BELOW IF ONE FAILS TO WORK
+```
+<h3>METHOD 1</h3>
 
-METHOD 1
-
+```bash
 First: edit proxychains config file and set  the following:
 "socks4 8090, socks5 8090"
 comment dns_leak.
@@ -48,8 +49,10 @@ proxychains rdesktop 192.168.98.30 - Using proxychains to maintain access to a w
 through Remote desktop protocol(RDP).
 
 #Username and password found in metasploitable.(Optional)
+```
+<h3>METHOD 2: Using Rpivot.</h3>
 
-METHOD 2: Using Rpivot.
+```bash
 We still need to leave our settings in /proxychains.conf as "socks4 8090, socks5 8090" 
 as we would be making use of socks.
 
@@ -72,8 +75,11 @@ On Victim's machine, run:
 
 We can test if it's reachable by running a simple nmap scan using
 "proxychains nmap 192.168.98.30".
+```
 
-METHOD 3 Ligolo-ng
+<h3>METHOD 3 Ligolo-ng</h3>
+
+```bash
 #Attacker Machine, download proxy & agent :
 #Proxy
 wget
