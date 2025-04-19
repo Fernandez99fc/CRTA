@@ -110,7 +110,7 @@ Start the proxy on the attacker server
 
 ```
 
-![Screenshot (238).png](Screenshot_(238).png)
+https://github.com/Fernandez99fc/CRTA/blob/main/Images/Screenshot_(238).png
 
 ```jsx
 Transfer the agent on the victim machine & start the connection
