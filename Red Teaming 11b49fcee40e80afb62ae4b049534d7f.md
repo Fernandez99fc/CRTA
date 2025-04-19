@@ -8,7 +8,6 @@ Domain Controller(DC) 10.10.10.2
 
 Application Server 10.10.10.4
 
-```bash
 Curl can be used to connect to a web server
 example:
 curl --upload-file http://192.168.50.3/dav/shell.php - Uploads a shell.php file on the
